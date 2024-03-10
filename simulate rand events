@@ -1,0 +1,61 @@
+<script>
+    function simulateRandomEvent() {
+      const elements = document.querySelectorAll('button, a, input[type="text"], textarea');
+
+      if (elements.length === 0) {
+        console.error('No clickable or input elements found.');
+        return;
+      }
+
+      const randomEventType = Math.random() < 0.5 ? 'click' : 'input';
+
+      if (randomEventType === 'click') {
+        simulateClickAtRandomLocation();
+      } else {
+        const randomIndex = Math.floor(Math.random() * elements.length);
+        const randomElement = elements[randomIndex];
+        simulateInput(randomElement);
+      }
+
+      const randomInterval = Math.floor(Math.random() * 10); // Maximum interval of 5 seconds (5000 milliseconds)
+      setTimeout(simulateRandomEvent, randomInterval);
+    }
+
+    function simulateClickAtRandomLocation() {
+      const pageWidth = window.innerWidth;
+      const pageHeight = window.innerHeight;
+
+      const randomX = Math.floor(Math.random() * pageWidth);
+      const randomY = Math.floor(Math.random() * pageHeight);
+
+      console.log('Simulated click at coordinates:', { x: randomX, y: randomY });
+
+      const simulatedClick = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        clientX: randomX,
+        clientY: randomY,
+      });
+
+      document.elementFromPoint(randomX, randomY).dispatchEvent(simulatedClick);
+    }
+
+    function simulateInput(element) {
+      const inputValue = generateRandomString(10);
+      console.log('Simulated input on:', element, 'with value:', inputValue);
+      element.value = inputValue;
+    }
+
+    function generateRandomString(length) {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+
+      for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+
+      return result;
+    }
+
+    simulateRandomEvent(); // Start the simulation
+  </script>
